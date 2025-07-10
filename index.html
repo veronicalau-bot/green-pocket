@@ -1,489 +1,797 @@
-<html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sustainability Resources</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1a5d1a, #4caf50);
-            min-height: 100vh;
-        }
-        .link-button {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .link-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* Button container - default for mobile */
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem; /* Increased gap for mobile */
-            margin-bottom: 2rem;
-        }
-        
-        /* Mobile-specific button styles */
-        @media (max-width: 767px) {
-            .link-button {
-                padding: 1rem 1.25rem;
-            }
-            
-            .button-content {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-            }
-            
-            .button-icon {
-                margin-right: 1rem;
-                flex-shrink: 0;
-            }
-            
-            .button-text-container {
-                text-align: left;
-            }
-            
-            .button-description {
-                font-size: 0.8rem;
-                opacity: 0.9;
-            }
-        }
-        
-        /* Enhanced button styles for larger screens */
-        @media (min-width: 768px) {
-            .link-button {
-                font-size: 1.1rem;
-                padding: 1rem 1.5rem;
-            }
-            
-            .link-button::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                transition: 0.5s;
-            }
-            
-            .link-button:hover::before {
-                left: 100%;
-            }
-        }
-        
-        /* For larger screens, make buttons side by side */
-        @media (min-width: 1024px) {
-            .button-container {
-                flex-direction: row;
-                justify-content: space-between;
-                gap: 1rem;
-            }
-            
-            .button-container .link-button {
-                width: 48%;
-            }
-            
-            .button-content {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 0.5rem 0;
-            }
-            
-            .button-icon {
-                font-size: 2rem;
-                margin-right: 0;
-                margin-bottom: 0.5rem;
-            }
-            
-            .button-text {
-                font-size: 1.1rem;
-                font-weight: 600;
-            }
-            
-            .button-description {
-                font-size: 0.85rem;
-                opacity: 0.9;
-                margin-top: 0.25rem;
-            }
-        }
-        
-        .embed-container {
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        }
-        .code-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            overflow-y: auto;
-        }
-        .code-content {
-            background-color: #1e293b;
-            color: #e2e8f0;
-            border-radius: 8px;
-            margin: 5% auto;
-            width: 90%;
-            max-width: 1000px;
-            padding: 20px;
-            white-space: pre-wrap;
-            font-family: monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            overflow-x: auto;
-        }
-        .close-button {
-            color: #fff;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close-button:hover {
-            color: #4caf50;
-        }
-        .leaf {
-            position: absolute;
-            opacity: 0.1;
-            z-index: -1;
-        }
-        #sourceCode {
-            white-space: pre-wrap;
-            overflow-x: auto;
-            padding: 10px;
-            border-radius: 4px;
-            background-color: #2d3748;
-        }
-        .section-heading {
-            position: relative;
-            display: inline-block;
-        }
-        .section-heading:after {
-            content: '';
-            position: absolute;
-            width: 60%;
-            height: 3px;
-            background-color: #4caf50;
-            bottom: -5px;
-            left: 20%;
-            border-radius: 2px;
-        }
-        
-        /* Custom responsive container */
-        .content-container {
-            width: 100%;
-            max-width: 450px; /* Default for mobile */
-            margin: 0 auto;
-        }
-        
-        /* Media query for larger screens */
-        @media (min-width: 768px) {
-            .content-container {
-                max-width: 700px; /* Medium screens */
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            .content-container {
-                max-width: 900px; /* Large screens */
-                width: 70%; /* At least 50% as requested, but 70% looks better */
-            }
-        }
-        
-        @media (min-width: 1280px) {
-            .content-container {
-                max-width: 1100px; /* Extra large screens */
-                width: 65%;
-            }
-        }
-        
-        /* Fullscreen button styles */
-        .fullscreen-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 8px;
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.2s ease;
-        }
-        
-        .fullscreen-button:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-            transform: scale(1.05);
-        }
-        
-        /* Fullscreen iframe container */
-        .fullscreen-iframe {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            z-index: 1001;
-        }
-        
-        .fullscreen-iframe iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .exit-fullscreen {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1002;
-            transition: all 0.2s ease;
-        }
-        
-        .exit-fullscreen:hover {
-            background-color: rgba(255, 0, 0, 0.8);
-            transform: scale(1.1);
-        }
-        
-        /* Button icon sizing */
-        .button-icon svg {
-            width: 2rem;
-            height: 2rem;
-        }
-        
-        @media (min-width: 1024px) {
-            .button-icon svg {
-                width: 2.5rem;
-                height: 2.5rem;
-            }
-        }
-    </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.relative{position:relative}.mx-auto{margin-left:auto;margin-right:auto}.mb-10{margin-bottom:2.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.h-10{height:2.5rem}.h-5{height:1.25rem}.w-10{width:2.5rem}.w-5{width:1.25rem}.flex-col{flex-direction:column}.items-center{align-items:center}.overflow-hidden{overflow:hidden}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border-2{border-width:2px}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-green-100{--tw-bg-opacity:1;background-color:rgb(220 252 231 / var(--tw-bg-opacity, 1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-opacity-90{--tw-bg-opacity:0.9}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-4{padding-bottom:1rem}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.text-green-400{--tw-text-opacity:1;color:rgb(74 222 128 / var(--tw-text-opacity, 1))}.text-green-600{--tw-text-opacity:1;color:rgb(22 163 74 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-70{opacity:0.7}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.ease-in-out{transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1)}.hover\:bg-gray-700:hover{--tw-bg-opacity:1;background-color:rgb(55 65 81 / var(--tw-bg-opacity, 1))}.hover\:bg-green-700:hover{--tw-bg-opacity:1;background-color:rgb(21 128 61 / var(--tw-bg-opacity, 1))}</style></head>
-<body class="p-4">
-    <!-- Background decorative elements -->
-    <div class="leaf" style="top: 10%; left: 5%; transform: rotate(20deg);">
-        <svg width="100" height="100" viewBox="0 0 24 24" fill="#ffffff">
-            <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"></path>
-        </svg>
-    </div>
-    <div class="leaf" style="top: 40%; right: 8%; transform: rotate(-15deg);">
-        <svg width="120" height="120" viewBox="0 0 24 24" fill="#ffffff">
-            <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"></path>
-        </svg>
-    </div>
-    <div class="leaf" style="bottom: 15%; left: 15%; transform: rotate(45deg);">
-        <svg width="80" height="80" viewBox="0 0 24 24" fill="#ffffff">
-            <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"></path>
-        </svg>
-    </div>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>永續發展互動學習</title>
+  <!-- 引入 Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入 Google Fonts - Inter 字體，用於英文和數字，並考慮 Noto Sans TC 用於中文 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* 設定全域字體，優先使用中文思源黑體，其次為 Inter，最後是系統無襯線字體 */
+    body {
+      font-family: 'Noto Sans TC', 'Inter', sans-serif;
+      background-color: #f0fdf4; /* 基礎背景色，波浪將疊加其上 */
+      scroll-behavior: smooth; /* 啟用平滑捲動 */
+    }
 
-    <!-- Content container with responsive width -->
-    <div class="content-container">
-        <div class="bg-white bg-opacity-90 rounded-xl shadow-xl overflow-hidden p-6 mb-10">
-            <div class="text-center mb-8">
-                <div class="inline-block p-3 rounded-full bg-green-100 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-                <h1 class="text-2xl font-bold text-green-800">Let's Go Green</h1>
-                <p class="text-green-600 mt-1">Explore the green theatre and sustainability</p>
+    /* 動態波浪背景容器樣式 */
+    .wave-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; /* 確保在內容下方 */
+      overflow: hidden; /* 隱藏超出部分的波浪 */
+    }
+
+    /* 波浪偽元素樣式 */
+    .wave-background::before,
+    .wave-background::after {
+      content: '';
+      position: absolute;
+      width: 200%; /* 確保波浪足夠寬以實現連續動畫 */
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-repeat: repeat-x;
+      background-size: 50% 100%; /* 調整波浪圖案的重複大小 */
+      animation: wave-animation 20s linear infinite; /* 波浪動畫，20秒線性無限循環 */
+      transform-origin: center bottom; /* 確保波浪從底部中心點動畫 */
+    }
+
+    /* 第一層波浪 (::before) */
+    .wave-background::before {
+      /* 使用 SVG data URI 定義波浪形狀，顏色為淺綠色且半透明 */
+      /* 調整為更深的綠色，同時保持透明度 */
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(160, 230, 190, 0.6)" d="M0,50 C25,100 75,0 100,50 L100,100 L0,100 Z" /></svg>');
+      opacity: 0.6; /* 透明度 */
+      animation-delay: -2s; /* 延遲動畫開始，創造錯位感 */
+    }
+
+    /* 第二層波浪 (::after) */
+    .wave-background::after {
+      /* 使用 SVG data URI 定義另一種波浪形狀，顏色為更淺的綠色且更透明 */
+      /* 調整為更深的綠色，同時保持透明度 */
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(190, 240, 190, 0.4)" d="M0,50 C25,0 75,100 100,50 L100,100 L0,100 Z" /></svg>');
+      opacity: 0.4; /* 透明度 */
+      animation-delay: -5s; /* 進一步延遲動畫開始 */
+      animation-duration: 25s; /* 不同的動畫速度，增加動態感 */
+    }
+
+    /* 定義波浪動畫關鍵幀 */
+    @keyframes wave-animation {
+      0% {
+        background-position: 0% 0%; /* 從左邊開始 */
+      }
+      100% {
+        background-position: 100% 0%; /* 向右移動一個波浪寬度 */
+      }
+    }
+
+    /* 提升 hover 效果，增加輕微的陰影變化 */
+    .hover-scale:hover {
+      transform: scale(1.03); /* 輕微縮小放大放大效果 */
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15); /* 增加陰影深度 */
+    }
+    /* 初始隱藏，用於 fade-in 動畫 */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease-out forwards;
+    }
+    /* 定義 fade-in 動畫 */
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    /* 卡片 hover 效果增強 */
+    .card {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px); /* 向上浮動更多 */
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15); /* 更明顯的陰影 */
+    }
+    /* 語言切換按鈕的樣式 */
+    .lang-toggle {
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
+    }
+    .lang-toggle:active {
+      transform: scale(0.98); /* 點擊時輕微縮小 */
+    }
+    /* 預設中文顯示，英文隱藏 */
+    .lang-en { display: none; }
+    .lang-zh { display: block; }
+    /* 當 body 有 'en' class 時，英文顯示，中文隱藏 */
+    body.en .lang-en { display: block; }
+    body.en .lang-zh { display: none; }
+
+    /* 自定義按鈕效果 */
+    .btn-primary {
+      transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* 連結 hover 效果 */
+    .link-hover-effect {
+      position: relative;
+      display: inline-block;
+      text-decoration: none;
+      color: #047857; /* green-700 */
+    }
+    .link-hover-effect::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      transform: scaleX(0);
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #047857; /* green-700 */
+      transform-origin: bottom right;
+      transition: transform 0.3s ease-out;
+    }
+    .link-hover-effect:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+
+    /* 返回頂部按鈕樣式 */
+    #back-to-top-btn {
+      display: none; /* 預設隱藏 */
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: #10B981; /* green-500 */
+      color: white;
+      padding: 1rem;
+      border-radius: 9999px; /* 圓形 */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
+      z-index: 1000; /* 確保在最上層 */
+    }
+    #back-to-top-btn:hover {
+      background-color: #059669; /* green-600 */
+      transform: translateY(-3px);
+    }
+    #back-to-top-btn:active {
+      transform: translateY(0);
+    }
+
+    /* 導航連結樣式 */
+    .nav-link {
+      transition: color 0.3s ease, background-color 0.3s ease;
+      padding: 0.75rem 1.25rem; /* 增加點擊區域 */
+      border-radius: 0.5rem; /* 圓角 */
+    }
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    /* 可切換內容的過渡效果 */
+    .collapsible-content {
+      transition: all 0.5s ease-out; /* 平滑過渡 */
+      overflow: hidden; /* 確保隱藏時內容不溢出 */
+      max-height: 0; /* 預設收起 */
+      opacity: 0; /* 預設透明 */
+    }
+    .collapsible-content.active {
+      max-height: 1000px; /* 足夠大的高度以顯示內容 */
+      opacity: 1; /* 完全顯示 */
+    }
+
+    /* 內容滑動器樣式 */
+    .content-slider-container {
+      position: relative;
+      overflow: hidden; /* 隱藏超出部分的內容 */
+      border-radius: 1.5rem; /* 大圓角 */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* 柔和陰影 */
+      background-color: #ffffff; /* 白色背景 */
+      padding: 2rem; /* 統一容器內邊距 */
+    }
+
+    .content-slider-inner {
+      display: flex;
+      width: 200%; /* 兩個內容頁面，所以是 200% */
+      transition: transform 0.7s ease-in-out; /* 平滑滑動過渡 */
+    }
+
+    .content-slider-inner > section {
+      flex-shrink: 0; /* 防止內容縮小 */
+      width: 50%; /* 每個內容頁面佔 50% 寬度 */
+      padding: 0 2rem; /* 內容內部間距，確保文字不會太靠邊 */
+      box-sizing: border-box; /* 讓 padding 不會增加總寬度 */
+    }
+
+    /* 移除舊的 slider-nav-buttons 樣式 */
+    .slider-nav-buttons {
+      display: none; /* 隱藏舊的箭頭按鈕容器 */
+    }
+
+    /* 新的底部導航按鈕樣式 */
+    .slider-bottom-nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+      gap: 1rem; /* 按鈕間距 */
+    }
+
+    .slider-bottom-nav button {
+      background-color: #cbd5e0; /* 預設灰色 */
+      color: #4a5568; /* 深灰色文字 */
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px; /* 圓形膠囊按鈕 */
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem; /* 較小字體 */
+      font-weight: 500;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .slider-bottom-nav button:hover {
+      background-color: #a0aec0; /* 淺灰色 hover */
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .slider-bottom-nav button.active {
+      background-color: #10B981; /* 綠色 active */
+      color: white;
+      box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    /* 針對小螢幕調整滑動器內部 padding */
+    @media (max-width: 767px) { /* sm breakpoint */
+      .content-slider-container {
+        padding: 1rem; /* 在小螢幕上減少容器 padding */
+      }
+      .content-slider-inner > section {
+        padding: 0 1rem; /* 在小螢幕上調整內容內部 padding */
+      }
+      .slider-bottom-nav {
+        gap: 0.5rem; /* 小螢幕按鈕間距 */
+      }
+      .slider-bottom-nav button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* 主頁面 iframe 容器樣式 (用於遊戲) */
+    .iframe-container {
+      position: relative;
+      width: 100%;
+      height: 800px; /* 設置固定高度為 800px */
+      overflow: hidden;
+      border-radius: 1rem; /* 圓角 */
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* 陰影 */
+      background-color: #f0fdf4; /* 淺綠色背景，與頁面風格一致 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .iframe-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none; /* 移除 iframe 預設邊框 */
+      border-radius: 1rem; /* 繼承容器圓角 */
+    }
+
+    /* 大螢幕遊玩按鈕樣式 (在主頁面 iframe 上) */
+    .open-large-screen-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+      color: white;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      z-index: 10; /* 確保在 iframe 上方 */
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .open-large-screen-button:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+      transform: scale(1.05);
+    }
+
+    .open-large-screen-button:active {
+      transform: scale(0.98);
+    }
+
+    /* 彈出式大螢幕容器樣式 */
+    .large-screen-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8); /* 半透明黑色背景 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; /* 確保在所有內容之上 */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .large-screen-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .large-screen-modal-content {
+      position: relative; /* 為了關閉按鈕的絕對定位 */
+      width: 95%; /* 佔據大部分寬度 */
+      height: 95%; /* 佔據大部分高度 */
+      background-color: #ffffff;
+      border-radius: 1rem;
+      overflow: hidden; /* 確保 iframe 圓角 */
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      display: flex; /* 讓 iframe 填滿內容 */
+      flex-direction: column;
+    }
+
+    .large-screen-modal-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 1rem; /* 繼承父容器圓角 */
+    }
+
+    /* 新增樣式: 確保導覽列目標區塊在捲動時不會被固定導覽列遮擋 */
+    .scroll-target {
+      scroll-margin-top: 6rem; /* 根據導覽列高度調整此值 */
+    }
+
+    /* YouTube 影片響應式容器樣式 */
+    .youtube-responsive-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio (height / width = 9 / 16 = 0.5625) */
+      height: 0;
+      overflow: hidden;
+      border-radius: 1rem; /* 圓角 */
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* 柔和陰影 */
+      background-color: #f0fdf4; /* 淺綠色背景 */
+    }
+
+    .youtube-responsive-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 1rem;
+    }
+  </style>
+  <script>
+    // 語言切換功能
+    function toggleLanguage() {
+      document.body.classList.toggle('en');
+    }
+
+    // 為各區塊添加延遲動畫
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section, header, footer, nav'); /* 包含 nav */
+      sections.forEach((section, index) => {
+        section.style.animationDelay = `${index * 0.1}s`; /* 每個區塊延遲 0.1 秒 */
+      });
+
+      // 返回頂部按鈕邏輯
+      const backToTopBtn = document.getElementById('back-to-top-btn');
+
+      // 捲動事件監聽器
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) { /* 當捲動超過 300px 時顯示按鈕 */
+          backToTopBtn.style.display = 'block';
+          backToTopBtn.style.opacity = '1';
+        } else {
+          backToTopBtn.style.opacity = '0';
+          setTimeout(() => {
+            if (window.scrollY <= 300) { /* 確保在隱藏前沒有再次捲動 */
+              backToTopBtn.style.display = 'none';
+            }
+          }, 300); /* 等待過渡動畫完成後再隱藏 */
+        }
+      });
+
+      // 按鈕點擊事件監聽器
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth' /* 平滑捲動 */
+        });
+      });
+
+      // 內容切換邏輯 (用於可收合區塊)
+      const toggleContent = (buttonId, contentId, showTextZh, hideTextZh, showTextEn, hideTextEn) => {
+        const button = document.getElementById(buttonId);
+        const content = document.getElementById(contentId);
+        const sliderContainer = document.getElementById('sdgs-pillars-slider'); // 獲取滑動器容器
+
+        if (!button || !content || !sliderContainer) return;
+
+        // 初始化按鈕文字和內容狀態
+        const isEnglish = document.body.classList.contains('en');
+        button.innerHTML = isEnglish ? showTextEn : showTextZh;
+        content.classList.remove('active'); // 預設隱藏
+
+        button.addEventListener('click', () => {
+          content.classList.toggle('active');
+          const isContentActive = content.classList.contains('active');
+          const currentIsEnglish = document.body.classList.contains('en');
+
+          if (isContentActive) {
+            button.innerHTML = currentIsEnglish ? hideTextEn : hideTextZh;
+          } else {
+            button.innerHTML = currentIsEnglish ? showTextEn : showTextZh;
+          }
+
+          // 在內容切換後，平滑捲動到滑動器容器的頂部
+          setTimeout(() => {
+            sliderContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 500); // 延遲一點，讓內容的高度變化有時間生效
+        });
+
+        // 監聽語言切換，更新按鈕文字
+        document.body.addEventListener('transitionend', (event) => {
+          if (event.propertyName === 'transform' && event.target.classList.contains('lang-toggle')) {
+            const currentIsEnglish = document.body.classList.contains('en');
+            const isContentActive = content.classList.contains('active');
+            if (isContentActive) {
+              button.innerHTML = currentIsEnglish ? hideTextEn : hideTextZh;
+            } else {
+              button.innerHTML = currentIsEnglish ? showTextEn : showTextZh;
+            }
+          }
+        });
+      };
+
+      // 為 SDGs 區塊設定切換功能
+      toggleContent('toggle-un-sdgs-btn', 'un-sdgs-collapsible-content', '了解更多', '收起內容', 'Learn More', 'Collapse Content');
+
+      // 為四大支柱區塊設定切換功能
+      toggleContent('toggle-four-pillars-btn', 'four-pillars-collapsible-content', '了解更多', '收起內容', 'Learn More', 'Collapse Content');
+
+
+      // 內容滑動器邏輯
+      const sliderInner = document.querySelector('.content-slider-inner');
+      const unSdgsNavBtnZh = document.getElementById('un-sdgs-nav-btn-zh');
+      const unSdgsNavBtnEn = document.getElementById('un-sdgs-nav-btn-en');
+      const fourPillarsNavBtnZh = document.getElementById('four-pillars-nav-btn-zh');
+      const fourPillarsNavBtnEn = document.getElementById('four-pillars-nav-btn-en');
+      const slides = document.querySelectorAll('.content-slider-inner > section');
+      let currentSlide = 0;
+
+      function getActiveNavButton(slideIndex) {
+          const isEnglish = document.body.classList.contains('en');
+          if (slideIndex === 0) { // UN SDGs slide
+              return isEnglish ? unSdgsNavBtnEn : unSdgsNavBtnZh;
+          } else { // Four Pillars slide
+              return isEnglish ? fourPillarsNavBtnEn : fourPillarsNavBtnZh;
+          }
+      }
+
+      function updateSliderNavButtons() {
+          // 移除所有按鈕的 active 狀態
+          unSdgsNavBtnZh.classList.remove('active');
+          unSdgsNavBtnEn.classList.remove('active');
+          fourPillarsNavBtnZh.classList.remove('active');
+          fourPillarsNavBtnEn.classList.remove('active');
+
+          // 為當前活躍的按鈕添加 active 狀態
+          const activeNavButton = getActiveNavButton(currentSlide);
+          if (activeNavButton) {
+              activeNavButton.classList.add('active');
+          }
+      }
+
+      function updateSlider() {
+          // 在切換滑動頁面時，將所有可收合內容重設為收合狀態
+          slides.forEach((slide, index) => {
+              const content = slide.querySelector('.collapsible-content');
+              const button = slide.querySelector('.btn-primary');
+              if (content && content.classList.contains('active')) {
+                  content.classList.remove('active');
+              }
+              // 同步重設「了解更多」/「收起」按鈕的文字
+              const isEnglish = document.body.classList.contains('en');
+              if (button) {
+                  if (index === 0) { // UN SDGs 區塊的按鈕
+                      button.innerHTML = isEnglish ? 'Learn More' : '了解更多';
+                  } else { // 四大支柱區塊的按鈕
+                      button.innerHTML = isEnglish ? 'Learn More' : '了解更多';
+                  }
+              }
+          });
+
+          sliderInner.style.transform = `translateX(-${currentSlide * 50}%)`; // 每個 slide 佔 50% 寬度
+          updateSliderNavButtons();
+      }
+
+      unSdgsNavBtnZh.addEventListener('click', () => { currentSlide = 0; updateSlider(); });
+      unSdgsNavBtnEn.addEventListener('click', () => { currentSlide = 0; updateSlider(); });
+      fourPillarsNavBtnZh.addEventListener('click', () => { currentSlide = 1; updateSlider(); });
+      fourPillarsNavBtnEn.addEventListener('click', () => { currentSlide = 1; updateSlider(); });
+
+      // 監聽語言切換，更新底部導航按鈕的活躍狀態
+      document.body.addEventListener('transitionend', (event) => {
+          if (event.propertyName === 'transform' && event.target.classList.contains('lang-toggle')) {
+              updateSliderNavButtons(); // 重新應用活躍狀態以更新語言顯示
+          }
+      });
+
+      // 初始化滑動器位置和按鈕狀態
+      updateSlider();
+
+      // 大螢幕模式功能
+      const openLargeScreenButton = document.getElementById('open-large-screen-button');
+      const largeScreenModal = document.getElementById('large-screen-modal');
+      const largeScreenGameIframe = document.getElementById('large-screen-game-iframe');
+      const modalCloseButton = document.getElementById('modal-close-button');
+
+      openLargeScreenButton.addEventListener('click', () => {
+        largeScreenGameIframe.src = "https://veronicalau-bot.github.io/green-theatre/"; // 載入遊戲
+        largeScreenModal.classList.add('active');
+        // 確保 iframe 獲得焦點，以便遊戲可以接收輸入
+        largeScreenGameIframe.focus();
+      });
+
+      modalCloseButton.addEventListener('click', () => {
+        largeScreenModal.classList.remove('active');
+        // 停止遊戲或重置 iframe 內容
+        largeScreenGameIframe.src = "about:blank"; // 清空 iframe 內容以停止遊戲
+      });
+
+      // 允許按 ESC 鍵關閉模態框
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && largeScreenModal.classList.contains('active')) {
+          largeScreenModal.classList.remove('active');
+          largeScreenGameIframe.src = "about:blank"; // 清空 iframe 內容以停止遊戲
+        }
+      });
+    });
+  </script>
+</head>
+<body class="text-gray-800">
+  <!-- 動態波浪背景 -->
+  <div class="wave-background"></div>
+
+  <!-- 頁首區塊 -->
+  <header class="bg-gradient-to-r from-green-600 to-green-700 text-white py-12 shadow-lg fade-in">
+    <div class="container mx-auto px-20 text-center">
+      <!-- 主標題，字體更大膽 -->
+      <h1 class="text-5xl md:text-6xl font-extrabold lang-zh drop-shadow-md">永續發展互動學習</h1>
+      <h1 class="text-5xl md:text-6xl font-extrabold lang-en drop-shadow-md">Interactive Learning: Sustainable Development</h1>
+      <!-- 副標題，增加留白 -->
+      <p class="mt-4 text-green-100 text-lg md:text-xl lang-zh max-w-3xl mx-auto">如何實踐環境、社會、經濟與文化永續</p>
+      <p class="mt-4 text-green-100 text-lg md:text-xl lang-en max-w-3xl mx-auto">How to practice environmental, social, economic and cultural sustainability.</p>
+      <!-- 語言切換按鈕 -->
+      <button onclick="toggleLanguage()" class="mt-6 px-6 py-2 bg-white text-green-700 rounded-full shadow-md hover:bg-gray-100 lang-toggle">中 / EN</button>
+    </div>
+  </header>
+
+  <!-- 新增網頁目錄 (導航列) -->
+  <nav class="bg-green-800 text-white py-4 shadow-md sticky top-0 z-50 fade-in">
+    <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-20"> <!-- 調整響應式內邊距 -->
+      <ul class="flex flex-col gap-y-2 sm:flex-row sm:flex-wrap sm:gap-x-6 md:gap-x-8 justify-center text-lg font-medium"> <!-- 調整響應式間距 -->
+        <li><a href="#sdgs-pillars-slider" class="nav-link lang-zh">永續發展概念</a></li> <!-- 指向滑動器容器 -->
+        <li><a href="#sdgs-pillars-slider" class="nav-link lang-en">Sustainable Development Concepts</a></li> <!-- 指向滑動器容器 -->
+        <li><a href="#resources" class="nav-link lang-zh">資源推薦</a></li>
+        <li><a href="#resources" class="nav-link lang-en">Resources</a></li>
+        <li><a href="#interactive-game" class="nav-link lang-zh">互動遊戲</a></li>
+        <li><a href="#interactive-game" class="nav-link lang-en">Interactive Game</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 主要內容區塊，增加整體垂直留白 -->
+  <main class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-20 py-16 space-y-24">
+
+    <!-- 內容滑動器：包含 UN SDGs 和四大支柱 -->
+    <div id="sdgs-pillars-slider" class="content-slider-container fade-in scroll-target">
+      <div class="content-slider-inner">
+        <!-- UN SDGs 介紹區塊 -->
+        <section id="un-sdgs">
+          <h2 class="text-4xl font-bold mb-6 text-green-800 lang-zh">🌍 聯合國永續發展目標 (UN SDGs)</h2>
+          <h2 class="text-4xl font-bold mb-6 text-green-800 lang-en">🌍 UN Sustainable Development Goals (SDGs)</h2>
+          <!-- 點擊按鈕顯示/隱藏內容 -->
+          <button id="toggle-un-sdgs-btn" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 shadow-md mb-6 btn-primary">
+            了解更多
+          </button>
+          <!-- 可收合的內容 -->
+          <div id="un-sdgs-collapsible-content" class="collapsible-content">
+            <p class="mb-10 text-lg text-gray-700 max-w-3xl leading-relaxed lang-zh">
+              聯合國永續發展目標 (SDGs) 是全球為實現永續未來而設定的17個目標。它們呼籲所有國家共同行動，以促進繁榮、保護地球，並確保所有人都能享有和平與繁榮。
+              <a href="https://sdgs.un.org/goals" target="_blank" class="link-hover-effect">（了解更多）</a>
+            </p>
+            <p class="mb-10 text-lg text-gray-700 max-w-3xl leading-relaxed lang-en">
+              The United Nations Sustainable Development Goals (SDGs) are a collection of 17 global goals set to achieve a sustainable future for all. They call for action by all countries to promote prosperity while protecting the planet and ensuring peace and prosperity for all people.
+              <a href="https://sdgs.un.org/goals" target="_blank" class="link-hover-effect">(Learn more)</a>
+            </p>
+            <!-- YouTube 影片內嵌 -->
+            <div class="youtube-responsive-container">
+              <iframe
+                src="https://www.youtube.com/embed/0XTBYMfZyrM"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
             </div>
+          </div>
+        </section>
 
-            <!-- Enhanced Link Buttons - Now positioned first -->
-            <div class="button-container">
-                <a href="https://theatregreenbook.com/" target="_blank" class="link-button block py-4 px-6 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg text-center transition duration-300 ease-in-out shadow-lg border-2 border-green-500">
-                    <div class="button-content flex-col">
-                        <div class="button-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
-                        </div>
-                        <div class="button-text-container">
-                            <div class="button-text">Theatre Green Book</div>
-                            <div class="button-description">Green production guidelines</div>
-                        </div>
-                    </div>
-                </a>
-                
-                <a href="https://libguides.hkapa.edu/sustainability" target="_blank" class="link-button block py-4 px-6 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg text-center transition duration-300 ease-in-out shadow-lg border-2 border-green-500">
-                    <div class="button-content flex-col">
-                        <div class="button-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-                            </svg>
-                        </div>
-                        <div class="button-text-container">
-                            <div class="button-text">More Resources on Sustainability</div>
-                            <div class="button-description">Learn more about sustainability</div>
-                        </div>
-                    </div>
-                </a>
+        <!-- 四大支柱介紹 -->
+        <section id="four-pillars">
+          <!-- 區塊標題 -->
+          <h2 class="text-4xl font-bold mb-6 text-green-800 lang-zh">🌱 永續性的四大支柱</h2>
+          <h2 class="text-4xl font-bold mb-6 text-green-800 lang-en">🌱 Four Pillars of Sustainability</h2>
+          <!-- 點擊按鈕顯示/隱藏內容 -->
+          <button id="toggle-four-pillars-btn" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 shadow-md mb-6 btn-primary">
+            了解更多
+          </button>
+          <!-- 可收合的內容 -->
+          <div id="four-pillars-collapsible-content" class="collapsible-content">
+            <p class="mb-10 text-lg text-gray-700 max-w-3xl leading-relaxed lang-zh">
+              這四大支柱的概念源自於 Stockholm Resilience Centre 提出的「SDGs Wedding Cake 模型」，將永續發展目標重新分類為：環境為基礎，社會為中間層，經濟位於最上層，文化貫穿其中。
+              <a href="https://www.stockholmresilience.org/research/research-news/2016-06-14-the-sdgs-wedding-cake.html" target="_blank" class="link-hover-effect">（了解更多）</a>
+            </p>
+            <p class="mb-10 text-lg text-gray-700 max-w-3xl leading-relaxed lang-en">
+              These four pillars are based on the "SDGs Wedding Cake Model" by the Stockholm Resilience Centre, categorizing sustainability as: environment as foundation, society as middle layer, economy on top, and culture throughout.
+              <a href="https://www.stockholmresilience.org/research/research-news/2016-06-14-the-sdgs-wedding-cake.html" target="_blank" class="link-hover-effect">(Learn more)</a>
+            </p>
+            <!-- 卡片網格佈局，間距更大 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <!-- 環境永續卡片 -->
+              <div class="bg-white p-8 rounded-2xl shadow-lg card border border-green-100">
+                <h3 class="text-2xl font-bold text-green-700 mb-3 lang-zh">🌍 環境永續</h3> <!-- 加入地球圖示 -->
+                <h3 class="text-2xl font-bold text-green-700 mb-3 lang-en">🌍 Environmental Sustainability</h3> <!-- 加入地球圖示 -->
+                <p class="mt-3 text-base text-gray-600 lang-zh">減碳、節能、使用再生材料、推動零廢棄製作</p>
+                <p class="mt-3 text-base text-gray-600 lang-en">Reduce carbon, save energy, use recycled materials, and aim for zero-waste productions</p>
+              </div>
+              <!-- 社會永續卡片 -->
+              <div class="bg-white p-8 rounded-2xl shadow-lg card border border-green-100">
+                <h3 class="text-2xl font-bold text-green-700 mb-3 lang-zh">🤝 社會永續</h3> <!-- 加入握手圖示 -->
+                <h3 class="text-2xl font-bold text-green-700 mb-3 lang-en">🤝 Social Sustainability</h3> <!-- 加入握手圖示 -->
+                <p class="mt-3 text-base text-gray-600 lang-zh">社區參與、無障礙演出、包容性節目設計</p>
+                <p class="mt-3 text-base text-gray-600 lang-en">Community engagement, accessibility, and inclusive programming</p>
+              </div>
+              <!-- 經濟永續卡片 -->
+              <div class="bg-white p-8 rounded-2xl shadow-lg card border border-green-100">
+                <h3 class="text-2xl font-bold text-green-700 mb-3 lang-zh">💰 經濟永續</h3> <!-- 加入錢袋圖示 -->
+                <h3 class="text-2xl font-bold text-green-700 mb-3 lang-en">💰 Economic Sustainability</h3> <!-- 加入錢袋圖示 -->
+                <p class="mt-3 text-base text-gray-600 lang-zh">穩健經營、多元收入來源、教育與數位拓展</p>
+                <p class="mt-3 text-base text-gray-600 lang-en">Stable operations, diverse income, education and digital innovation</p>
+              </div>
+              <!-- 文化永續卡片 -->
+              <div class="bg-white p-8 rounded-2xl shadow-lg card border border-green-100">
+                <h3 class="text-2xl font-bold text-green-700 mb-3 lang-zh">🎭 文化永續</h3> <!-- 加入戲劇面具圖示 -->
+                <h3 class="text-2xl font-bold text-green-700 mb-3 lang-en">🎭 Cultural Sustainability</h3> <!-- 加入戲劇面具圖示 -->
+                <p class="mt-3 text-base text-gray-600 lang-zh">保存傳統、創新演繹、傳承文化資產</p>
+                <p class="mt-3 text-base text-gray-600 lang-en">Preserve tradition, encourage innovation, pass on cultural assets</p>
+              </div>
             </div>
-
-            <!-- Mini Game Heading -->
-            <div class="text-center mb-4">
-                <h2 class="text-xl font-semibold text-green-800">Mini Game</h2>
-                <p class="text-green-600 mt-1">Aim for the highest audience satisfaction & sustainability index within limited budget!</p>
-            </div>
-
-            <!-- Embedded Widget with Fullscreen Button -->
-            <div class="embed-container mb-6 relative">
-                <button id="fullscreenBtn" class="fullscreen-button" aria-label="Enter fullscreen">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-                    </svg>
-                </button>
-                <iframe id="gameIframe" src="https://veronicalau-bot.github.io/green-theatre/" width="100%" height="1000" frameborder="0" allowfullscreen=""></iframe>
-            </div>
-        </div>
-
-        <!-- View Source Code Button -->
-        <div class="text-center mb-8">
-            <button id="viewSourceBtn" class="py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition duration-300 flex items-center mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-                </svg>
-                View Source Code
-            </button>
-        </div>
+          </div>
+        </section>
+      </div>
+      <!-- 新的底部導航按鈕 -->
+      <div class="slider-bottom-nav">
+        <button id="un-sdgs-nav-btn-zh" class="lang-zh">UN SDGs</button>
+        <button id="un-sdgs-nav-btn-en" class="lang-en">UN SDGs</button>
+        <button id="four-pillars-nav-btn-zh" class="lang-zh">永續發展</button>
+        <button id="four-pillars-nav-btn-en" class="lang-en">Sustainable Development</button>
+      </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center text-white text-sm opacity-70 pb-4">
-        <p>© 2025 HKAPA Libraries</p>
-    </footer>
+    <!-- 資源推薦區塊 -->
+    <section id="resources" class="fade-in scroll-target">
+      <!-- 區塊標題 -->
+      <h2 class="text-4xl font-bold mb-8 text-green-800 lang-zh">📘 資源推薦</h2>
+      <h2 class="text-4xl font-bold mb-8 text-green-800 lang-en">📘 Recommended Resources</h2>
+      <!-- 內容區塊，增加內邊距和圓角 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg fade-in border border-green-100">
+        <ul class="list-disc pl-6 space-y-4 text-lg text-gray-700">
+          <!-- 圖書館資源改為按鈕形式並移至首位 -->
+          <li class="lang-zh list-none">
+            <a href="https://libguides.hkapa.edu/sustainability" class="inline-block bg-green-600 text-white px-8 py-4 rounded-full hover:bg-green-700 shadow-lg btn-primary text-lg font-semibold no-underline" target="_blank">📚 圖書館資源：永續表演藝術館藏查詢</a>
+          </li>
+          <li class="lang-en list-none">
+            <a href="https://libguides.hkapa.edu/sustainability" class="inline-block bg-green-600 text-white px-8 py-4 rounded-full hover:bg-green-700 shadow-lg btn-primary text-lg font-semibold no-underline" target="_blank">📚 Library Resources: Search our sustainable performing arts collection</a>
+          </li>
 
-    <!-- Source Code Modal -->
-    <div id="codeModal" class="code-modal">
-        <div class="code-content">
-            <span class="close-button" id="closeModal">×</span>
-            <h2 class="text-xl font-bold mb-4 text-green-400">Website Source Code</h2>
-            <pre id="sourceCode"></pre>
-        </div>
-    </div>
+          <li class="lang-zh"><strong><a href="https://theatregreenbook.com/" target="_blank" class="link-hover-effect">Theatre Green Book</a></strong>：劇場永續製作的行業標準</li>
+          <li class="lang-en"><strong><a href="https://theatregreenbook.com/" target="_blank" class="link-hover-effect">Theatre Green Book</a></strong>: Industry standards for sustainable theatre production</li>
 
-    <!-- Fullscreen iframe container -->
-    <div id="fullscreenContainer" class="fullscreen-iframe">
-        <button id="exitFullscreen" class="exit-fullscreen" aria-label="Exit fullscreen">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+          <li class="lang-zh"><strong><a href="https://sdgs.un.org/goals" target="_blank" class="link-hover-effect">17項永續發展目標 Sustainable Development: The 17 Goals</a></strong>：聯合國官方網站</li>
+          <li class="lang-en"><strong><a href="https://sdgs.un.org/goals" target="_blank" class="link-hover-effect">17 Sustainable Development Goals: The 17 Goals</a></strong>: Official UN website</li>
+
+          <li class="lang-zh"><strong><a href="https://www.mplus.org.hk/tc/magazine/sustainability-art-design-ecology-reimagined/" target="_blank" class="link-hover-effect">M+: 生態及可持續發展 Ecology and Sustainability</a></strong>：M+文章</li>
+          <li class="lang-en"><strong><a href="https://www.mplus.org.hk/en/magazine/sustainability-art-design-ecology-reimagined/" target="_blank" class="link-hover-effect">M+: Ecology and Sustainability</a></strong>: M+ Article</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 互動遊戲區塊 -->
+    <section id="interactive-game" class="fade-in scroll-target">
+      <!-- 區塊標題 -->
+      <h2 class="text-4xl font-bold mb-8 text-green-800 lang-zh">🎮 互動遊戲</h2>
+      <h2 class="text-4xl font-bold mb-8 text-green-800 lang-en">🎮 Interactive Game</h2>
+      <!-- 遊戲內嵌容器 -->
+      <div class="iframe-container">
+        <iframe id="game-iframe" src="https://veronicalau-bot.github.io/green-theatre/" title="Green Theatre Game" allowfullscreen></iframe>
+        <!-- 大螢幕遊玩按鈕 -->
+        <button id="open-large-screen-button" class="open-large-screen-button">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm1.414 1.414a1 1 0 011.414 0L10 9.172l3.172-3.172a1 1 0 111.414 1.414L11.414 10l3.172 3.172a1 1 0 01-1.414 1.414L10 10.828l-3.172 3.172a1 1 0 01-1.414-1.414L8.586 10 5.414 6.828a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+          <span class="lang-zh">大螢幕遊玩</span>
+          <span class="lang-en">Play Full-Width</span>
         </button>
-        <iframe id="fullscreenIframe" src="" frameborder="0" allowfullscreen=""></iframe>
-    </div>
+      </div>
+      <p class="mt-6 text-center text-gray-600 text-lg lang-zh">
+        這是一個關於永續劇場實踐的互動遊戲。點擊上方遊戲區域開始體驗！
+      </p>
+      <p class="mt-6 text-center text-gray-600 text-lg lang-en">
+        This is an interactive game about sustainable theatre practices. Click the game area above to start playing!
+      </p>
+    </section>
 
-    <script>
-        // Source code modal functionality
-        const modal = document.getElementById("codeModal");
-        const btn = document.getElementById("viewSourceBtn");
-        const span = document.getElementById("closeModal");
-        const sourceCodeElement = document.getElementById("sourceCode");
-        
-        btn.onclick = function() {
-            const htmlContent = document.documentElement.outerHTML;
-            const escapedHtml = htmlContent
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-            sourceCodeElement.innerHTML = escapedHtml;
-            modal.style.display = "block";
-        }
-        
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-        
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-        
-        // Fullscreen functionality
-        const fullscreenBtn = document.getElementById("fullscreenBtn");
-        const exitFullscreenBtn = document.getElementById("exitFullscreen");
-        const fullscreenContainer = document.getElementById("fullscreenContainer");
-        const fullscreenIframe = document.getElementById("fullscreenIframe");
-        const gameIframe = document.getElementById("gameIframe");
-        
-        fullscreenBtn.addEventListener("click", function() {
-            // Set the same source as the original iframe
-            fullscreenIframe.src = gameIframe.src;
-            // Show the fullscreen container
-            fullscreenContainer.style.display = "block";
-            // Prevent scrolling on the body
-            document.body.style.overflow = "hidden";
-        });
-        
-        exitFullscreenBtn.addEventListener("click", function() {
-            // Hide the fullscreen container
-            fullscreenContainer.style.display = "none";
-            // Allow scrolling again
-            document.body.style.overflow = "auto";
-            // Optional: pause/reset the iframe content by clearing and resetting src
-            const currentSrc = fullscreenIframe.src;
-            fullscreenIframe.src = "";
-            // We don't actually reset it here to avoid reloading the game
-        });
-        
-        // Also exit fullscreen when pressing Escape key
-        document.addEventListener("keydown", function(e) {
-            if (e.key === "Escape" && fullscreenContainer.style.display === "block") {
-                exitFullscreenBtn.click();
-            }
-        });
-        
-        // Adjust button layout based on screen size
-        function adjustButtonLayout() {
-            const buttons = document.querySelectorAll('.link-button');
-            const buttonContents = document.querySelectorAll('.button-content');
-            const isWideScreen = window.innerWidth >= 1024;
-            
-            buttonContents.forEach(content => {
-                if (isWideScreen) {
-                    content.classList.add('flex-col');
-                    content.classList.remove('flex-row');
-                } else {
-                    content.classList.remove('flex-col');
-                    content.classList.add('flex-row');
-                }
-            });
-        }
-        
-        // Run on page load and window resize
-        window.addEventListener('load', adjustButtonLayout);
-        window.addEventListener('resize', adjustButtonLayout);
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9386381f51186e55',t:'MTc0NjAwNzUxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
-</body></html>
+  </main>
+
+  <!-- 彈出式大螢幕遊戲模態框 -->
+  <div id="large-screen-modal" class="large-screen-modal">
+    <div class="large-screen-modal-content">
+      <button id="modal-close-button" class="modal-close-button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <iframe id="large-screen-game-iframe" src="about:blank" title="Green Theatre Game Large Screen" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- 頁腳區塊 -->
+  <footer class="bg-gradient-to-r from-green-700 to-green-800 text-white py-8 mt-20 fade-in">
+    <div class="container mx-auto px-20 text-base text-center">
+      <p class="lang-zh">© 2025 你的圖書館名稱．製作單位｜可持續表演藝術教學平台</p>
+      <p class="lang-en">© 2025 Your Library Name · Developed by | Sustainable Performing Arts Teaching Platform</p>
+    </div>
+  </footer>
+
+  <!-- 返回頂部按鈕 -->
+  <div id="back-to-top-btn" class="flex items-center justify-center">
+    <!-- 使用 SVG 圖示表示向上箭頭 -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+  </div>
+</body>
+</html>
